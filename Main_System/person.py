@@ -22,6 +22,3 @@ class Person:
         if self.FirstName == "" or self.LastName == "" or self.Email == "" or self.Address == "" or self.Phone == "" or self.Country == "" or self.DateOfBirth == "":
             raise ValueError
         return True
-
-    def __str__(self):
-        return f"'FirstName': {self.FirstName}, 'LastName': {self.LastName}, 'DateOfBirth': {self.DateOfBirth}, 'Email': {self.Email}, 'Phone': {self.Phone}, 'Address': {self.Address}, 'Country': {self.Country},'CPR': {self.CprNumber}"

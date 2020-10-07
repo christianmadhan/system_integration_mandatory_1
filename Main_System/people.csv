@@ -1,4 +1,2 @@
 FirstName,LastName,Email,DateOfBirth,Phone,Address,Country
-Christian,Witt,C@c.dk,14-05-1995,10101010,"place 1, 2300 amager",Denmark
-Georgina,Mitronici,Geo@geo.dk,23-03-1995,10101010,"Place 2, 2300 Amager",Romania
-Steffen,hansen,S@H.dk,02-03-1889,10101010,"Hun 23, 2000 Frederiksberg",Hungary
+christian,witt,c@c.dk,14-05-1995,10101010,place 1,denmark
