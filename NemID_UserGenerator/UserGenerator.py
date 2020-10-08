@@ -5,7 +5,6 @@ import random
 
 # current script name
 script_name = path.basename(__file__)
-
 # Init server
 app = Flask(__name__)
 
@@ -21,15 +20,16 @@ def generate_nemId():
     except Exception as e:
         print(f"******* Error in {script_name} when generating nemId *******")
         print(f"Error: {e}")
-        return jsonify("Cannot create nemId!"), 500
+        return jsonify({"server error": "cannot generate nemID"}), 500
 
 
+# will generate nemId number in form of: {random 5 digits}-{last four digits of CPR}
 def generate_nemId_number(cpr):
     last_four_digits = cpr[-4:]
     random_five_digits = random.randint(10000, 99999)
     return f'{random_five_digits}-{last_four_digits}'
 
 
-# Run app
+# Run app on port 8088
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8088)
