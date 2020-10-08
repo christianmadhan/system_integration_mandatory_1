@@ -15,8 +15,8 @@ app = Flask(__name__)
 def generate_nemId():
 	try:
 		cpr = request.json['cpr']
-		generate_nemId_number(cpr)
-		return jsonify({"nemId": "44445"}), 201
+		nemId = generate_nemId_number(cpr)
+		return jsonify({"nemId": nemId}), 201
 
 	except Exception as e:
 		print(f"******* Error in {script_name} when generating nemId *******")
