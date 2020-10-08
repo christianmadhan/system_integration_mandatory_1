@@ -10,5 +10,9 @@ CREATE TABLE [auth_log](
     [UserId] INTEGER NOT NULL,
     [Code] TEXT NOT NULL,
     [Timestamp] DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY ([UserId]) REFERENCES [user](Id)
+    FOREIGN KEY
+([UserId]) REFERENCES [user]
+(Id)
 );
+
+

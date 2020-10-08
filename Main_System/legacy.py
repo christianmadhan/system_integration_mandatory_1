@@ -41,11 +41,11 @@ def add_people(f_name, l_name, date_of_birth, email, country, phone, address):
         "CprNumber": p.CprNumber,
         "Email": p.Email
     }
+
     # Write msgpack file
     with open("data.msgpack", "wb") as outfile:
         packed = msgpack.packb(data)
         outfile.write(packed)
-    print(requests.post(url=URL, data=ROOT[0], headers=HEADERS).text)
 
 
 with open('people.csv', newline='') as csvfile:
@@ -55,8 +55,5 @@ with open('people.csv', newline='') as csvfile:
                    row['Email'], row['Phone'], row['Address'], row['Country'])
 
 
-def postnemid():
-    # Read msgpack file
-    with open("data.msgpack", "rb") as data_file:
-        byte_data = data_file.read()
-        print(byte_data)
+x = requests.post(url=URL, data=ET.tostring(ROOT[0]), headers=HEADERS)
+print(x)
