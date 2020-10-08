@@ -3,17 +3,19 @@ from person import Person
 import random
 import xml.etree.ElementTree as ET
 import requests
+import msgpack
 
 
-people = []
-url = 'http://localhost:8080/nemID'
-root = ET.Element('root')
+URL = 'http://localhost:8080/nemID'
+ROOT = ET.Element('root')
+HEADERS = {'Content-Type': 'application/xml'}
 
 
 def generate_cpr(date_of_birth):
     date = date_of_birth.split('-')
     random_4_digits = random.randint(1000, 9999)
-    return ''.join(date) + str(random_4_digits)
+    cpr_number = date[0] + date[1] + date[-1][-2:]
+    return ''.join(cpr_number) + str(random_4_digits)
 
 
 def add_people(f_name, l_name, date_of_birth, email, country, phone, address):
@@ -32,8 +34,18 @@ def add_people(f_name, l_name, date_of_birth, email, country, phone, address):
     last_name.text = p.LastName
     cpr_number.text = p.CprNumber
     email_.text = p.Email
-    root.append(person_obj)
-    people.append(p)
+    ROOT.append(person_obj)
+    data = {
+        "FirstName": p.FirstName,
+        "LastName": p.LastName,
+        "CprNumber": p.CprNumber,
+        "Email": p.Email
+    }
+    # Write msgpack file
+    with open("data.msgpack", "wb") as outfile:
+        packed = msgpack.packb(data)
+        outfile.write(packed)
+    print(requests.post(url=URL, data=ROOT[0], headers=HEADERS).text)
 
 
 with open('people.csv', newline='') as csvfile:
@@ -42,17 +54,9 @@ with open('people.csv', newline='') as csvfile:
         add_people(row['FirstName'], row['LastName'], row['DateOfBirth'],
                    row['Email'], row['Phone'], row['Address'], row['Country'])
 
-tree = ET.ElementTree(root)
-tree.write('data.xml')
-
 
 def postnemid():
-    tree = ET.parse('data.xml')
-    root = tree.getroot()
-    ps = root.findall('Person')
-    headers = {'Content-Type': 'application/xml'}
-    x = requests.post(url, data=ps[0], headers=headers)
-    print(x)
-
-
-postnemid()
+    # Read msgpack file
+    with open("data.msgpack", "rb") as data_file:
+        byte_data = data_file.read()
+        print(byte_data)
