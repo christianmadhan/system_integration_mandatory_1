@@ -11,8 +11,6 @@ script_name = path.basename(__file__)
 # Init server
 app = Flask(__name__)
 # path to database in use. pathlib library is used to generalize path for both osx and windows
-# database = r"..\NemID_ESB\nem_id_database.sqlite"
-# database = r"../NemID_ESB/nem_id_database.sqlite"
 database = Path("../NemID_ESB/nem_id_database.sqlite")
 
 
@@ -43,6 +41,7 @@ def check_if_user_exits(conn, password, nemdId):
         print(e)
 
 
+# will store authentication log in the database. User's id, generated code, and timestamp will be stored.
 def store_in_database(conn, user_id, auth_code):
     try:
         timestamp = datetime.datetime.now().timestamp()
@@ -57,9 +56,11 @@ def store_in_database(conn, user_id, auth_code):
 @app.route('/nemid-auth', methods=['POST'])
 def generate_nemId():
     try:
+        # data taken from the request body
         password = request.json['nemIdCode']
         nemId = request.json['nemId']
 
+        # opening the database
         conn = create_connection(database)
         with conn:
             user_id = check_if_user_exits(conn, password, nemId)
